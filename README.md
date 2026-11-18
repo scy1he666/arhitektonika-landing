@@ -4,6 +4,18 @@
 заявки из формы сохраняются в `localStorage` и имитируют отправку,
 калькулятор сметы считает предварительную стоимость мгновенно.
 
+## Скриншоты
+
+Первый экран продакшн-сборки: десктоп (1440 × 900) и мобильная версия (390 × 844).
+Нажмите на превью, чтобы открыть полностраничный снимок.
+
+<p>
+  <a href="docs/screenshots/desktop-full.webp"><img src="docs/screenshots/desktop-preview.webp" alt="Первый экран на компьютере" width="544"></a>
+  <a href="docs/screenshots/mobile-full.webp"><img src="docs/screenshots/mobile-preview.webp" alt="Первый экран на телефоне" width="157"></a>
+</p>
+
+[Десктоп целиком](docs/screenshots/desktop-full.webp) · [Мобильная версия целиком](docs/screenshots/mobile-full.webp)
+
 ## Стек
 
 React 19 · Vite 7 · Tailwind CSS 4 · lucide-react · vite-plugin-singlefile

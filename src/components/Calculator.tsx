@@ -80,7 +80,7 @@ export default function Calculator({ type, onTypeChange, onSubmit }: Props) {
   return (
     <section id="calculator" className="relative scroll-mt-24 bg-ink text-paper py-16 sm:py-24" aria-label="Калькулятор стоимости">
       {/* faint glow */}
-      <div aria-hidden="true" className="pointer-events-none absolute -top-32 left-1/2 h-96 w-[42rem] -translate-x-1/2 rounded-full bg-copper/15 blur-[140px]" />
+      <div aria-hidden="true" className="pointer-events-none absolute -top-32 left-1/2 h-96 w-[42rem] max-w-full -translate-x-1/2 rounded-full bg-copper/15 blur-[140px]" />
 
       <div className="relative mx-auto max-w-7xl px-4 sm:px-6">
         <div className="flex flex-col lg:flex-row lg:items-end lg:justify-between gap-6">
@@ -101,7 +101,7 @@ export default function Calculator({ type, onTypeChange, onSubmit }: Props) {
           <div className="lg:col-span-7 rounded-3xl border border-paper/10 bg-ink-2/60 p-6 sm:p-8 backdrop-blur">
             {/* type segmented control */}
             <p className="font-mono text-[10px] uppercase tracking-[0.2em] text-paper/50">Тип ремонта</p>
-            <div className="mt-3 grid grid-cols-3 gap-2 rounded-2xl border border-paper/10 bg-ink p-2" role="tablist" aria-label="Тип ремонта">
+            <div className="mt-3 grid gap-2 rounded-2xl border border-paper/10 bg-ink p-2 sm:grid-cols-3" role="tablist" aria-label="Тип ремонта">
               {(Object.keys(RATES) as ServiceId[]).map((id) => {
                 const selected = id === type;
                 return (
@@ -110,12 +110,12 @@ export default function Calculator({ type, onTypeChange, onSubmit }: Props) {
                     role="tab"
                     aria-selected={selected}
                     onClick={() => onTypeChange(id)}
-                    className={`rounded-xl px-2 sm:px-4 py-3 text-center transition-all duration-300 ${
+                    className={`flex items-center justify-between gap-2 rounded-xl px-3 py-3 text-left transition-all duration-300 sm:block sm:px-4 sm:text-center ${
                       selected ? "bg-copper text-ink shadow-[0_10px_30px_-10px_rgba(194,109,61,0.7)]" : "text-paper/75 hover:text-paper"
                     }`}
                   >
                     <span className="block font-display text-[12px] sm:text-sm font-extrabold leading-tight">{LABELS[id]}</span>
-                    <span className={`mt-1 block font-mono text-[9px] sm:text-[10px] ${selected ? "text-ink/80" : "text-paper/45"}`}>
+                    <span className={`block font-mono text-[9px] sm:mt-1 sm:text-[10px] ${selected ? "text-ink/80" : "text-paper/45"}`}>
                       от {fmt(RATES[id])}/м²
                     </span>
                   </button>
