@@ -1,0 +1,211 @@
+@import "tailwindcss";
+
+@theme {
+  --color-paper: #f9f8f6;
+  --color-ink: #171b1e;
+  --color-ink-2: #20262b;
+  --color-copper: #c26d3d;
+  --color-copper-deep: #a8542b;
+  --color-copper-light: #d9995f;
+  --color-line: #e6e3dc;
+  --color-muted: #6b6f73;
+
+  --font-display: "Manrope", ui-sans-serif, system-ui, sans-serif;
+  --font-body: "Inter", ui-sans-serif, system-ui, sans-serif;
+  --font-mono: "JetBrains Mono", ui-monospace, monospace;
+  --font-serif: "Playfair Display", ui-serif, Georgia, serif;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  background: var(--color-paper);
+  overflow-x: hidden;
+}
+
+::selection {
+  background: rgba(194, 109, 61, 0.28);
+  color: var(--color-ink);
+}
+
+/* ---------- film grain ---------- */
+.noise::after {
+  content: "";
+  position: fixed;
+  inset: -50%;
+  z-index: 70;
+  pointer-events: none;
+  opacity: 0.05;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 400 400' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  background-size: 320px 320px;
+}
+
+/* ---------- reveal on scroll ---------- */
+.reveal {
+  opacity: 0;
+  transform: translateY(34px);
+  transition:
+    opacity 0.8s ease,
+    transform 0.9s cubic-bezier(0.22, 1, 0.36, 1);
+  transition-delay: var(--reveal-delay, 0ms);
+  will-change: opacity, transform;
+}
+.reveal.is-visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* ---------- marquee ---------- */
+@keyframes marquee-x {
+  from {
+    transform: translate3d(0, 0, 0);
+  }
+  to {
+    transform: translate3d(-50%, 0, 0);
+  }
+}
+.animate-marquee {
+  animation: marquee-x 32s linear infinite;
+  width: max-content;
+}
+.marquee-mask {
+  mask-image: linear-gradient(
+    to right,
+    transparent,
+    black 6%,
+    black 94%,
+    transparent
+  );
+}
+
+/* ---------- rotating badge ---------- */
+@keyframes spin-360 {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+.animate-spin-slow {
+  animation: spin-360 18s linear infinite;
+  transform-origin: 50% 50%;
+}
+
+/* ---------- floating card float ---------- */
+@keyframes float-y {
+  0%,
+  100% {
+    transform: translateY(0) rotate(-1.2deg);
+  }
+  50% {
+    transform: translateY(-10px) rotate(-1.2deg);
+  }
+}
+.animate-float {
+  animation: float-y 5.5s ease-in-out infinite;
+}
+
+/* ---------- review transition ---------- */
+@keyframes review-in {
+  from {
+    opacity: 0;
+    transform: translateY(18px);
+    filter: blur(4px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+    filter: blur(0);
+  }
+}
+.review-enter {
+  animation: review-in 0.55s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+/* ---------- outlined watermark text ---------- */
+.outline-text {
+  -webkit-text-stroke: 1.2px rgba(249, 248, 246, 0.22);
+  color: transparent;
+  user-select: none;
+}
+
+/* ---------- FAQ grid-rows accordion ---------- */
+.faq-panel {
+  display: grid;
+  grid-template-rows: 0fr;
+  transition: grid-template-rows 0.45s cubic-bezier(0.22, 1, 0.36, 1);
+}
+.faq-item[data-open="true"] .faq-panel {
+  grid-template-rows: 1fr;
+}
+.faq-item[data-open="true"] .faq-icon {
+  transform: rotate(45deg);
+}
+.faq-icon {
+  transition: transform 0.35s ease;
+}
+
+/* ---------- range slider ---------- */
+.area-range {
+  -webkit-appearance: none;
+  appearance: none;
+  height: 6px;
+  border-radius: 9999px;
+  outline: none;
+  cursor: pointer;
+}
+.area-range::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 26px;
+  height: 26px;
+  border-radius: 9999px;
+  background: #f9f8f6;
+  border: 3px solid var(--color-copper);
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.35);
+  transition: transform 0.15s ease;
+}
+.area-range::-webkit-slider-thumb:hover {
+  transform: scale(1.15);
+}
+.area-range::-moz-range-thumb {
+  width: 22px;
+  height: 22px;
+  border-radius: 9999px;
+  background: #f9f8f6;
+  border: 3px solid var(--color-copper);
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.35);
+}
+
+/* ---------- progress bar in hero card ---------- */
+@keyframes grow-bar {
+  from {
+    width: 0%;
+  }
+  to {
+    width: 76%;
+  }
+}
+.animate-grow-bar {
+  animation: grow-bar 1.6s cubic-bezier(0.22, 1, 0.36, 1) 0.4s both;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .reveal,
+  .animate-marquee,
+  .animate-spin-slow,
+  .animate-float,
+  .review-enter,
+  .animate-grow-bar {
+    animation: none !important;
+    transition: none !important;
+    opacity: 1 !important;
+    transform: none !important;
+  }
+  html {
+    scroll-behavior: auto;
+  }
+}
