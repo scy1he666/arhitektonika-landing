@@ -105,7 +105,7 @@ export default function Calculator({ type, onTypeChange, onSubmit }: Props) {
             </p>
             <div
               className="mt-2.5 grid gap-1 rounded-lg border border-line bg-paper p-1 sm:grid-cols-3"
-              role="tablist"
+              role="radiogroup"
               aria-labelledby="calc-type-label"
             >
               {(Object.keys(RATES) as ServiceId[]).map((id) => {
@@ -113,8 +113,8 @@ export default function Calculator({ type, onTypeChange, onSubmit }: Props) {
                 return (
                   <button
                     key={id}
-                    role="tab"
-                    aria-selected={selected}
+                    role="radio"
+                    aria-checked={selected}
                     onClick={() => onTypeChange(id)}
                     className={`flex items-center justify-between gap-2 rounded-md px-3 py-2 text-left transition-colors duration-150 sm:block sm:text-center ${
                       selected ? "bg-surface text-ink shadow-[0_1px_2px_rgba(31,27,22,0.05)]" : "text-secondary hover:text-ink"
