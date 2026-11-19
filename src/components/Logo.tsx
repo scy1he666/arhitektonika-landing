@@ -1,34 +1,23 @@
-type LogoProps = {
-  variant?: "dark" | "light";
-  className?: string;
-};
-
-export default function Logo({ variant = "dark", className = "" }: LogoProps) {
+export default function Logo({ variant = "dark", className = "" }: { variant?: "dark" | "light"; className?: string }) {
   const word = variant === "dark" ? "text-ink" : "text-paper";
-  const sub = variant === "dark" ? "text-muted" : "text-paper/55";
+  const sub = variant === "dark" ? "text-muted" : "text-paper/60";
 
   return (
-    <a href="#top" className={`group inline-flex items-center gap-3 ${className}`} aria-label="АРХИТЕКТОНИКА — наверх">
-      <svg width="44" height="44" viewBox="0 0 64 64" aria-hidden="true" className="shrink-0">
-        <rect width="64" height="64" rx="14" className={variant === "dark" ? "fill-ink" : "fill-copper"} />
+    <a href="#top" className={`inline-flex items-center gap-3 ${className}`} aria-label="АРХИТЕКТОНИКА, наверх">
+      <svg width="32" height="32" viewBox="0 0 64 64" aria-hidden="true" className="shrink-0">
         <path
-          d="M18 46V32c0-8.8 6.3-16 14-16s14 7.2 14 16v14"
+          d="M14 50V32c0-9.9 8.1-18 18-18s18 8.1 18 18v18"
           fill="none"
-          stroke="#C26D3D"
+          stroke="currentColor"
           strokeWidth="5"
           strokeLinecap="round"
-          className="transition-transform duration-500 group-hover:-translate-y-1"
-          style={{ transformOrigin: "center" }}
+          className={variant === "dark" ? "text-ink" : "text-paper"}
         />
-        <path d="M18 46h28" stroke="#F9F8F6" strokeWidth="4" strokeLinecap="round" />
+        <path d="M10 50h44" stroke="currentColor" strokeWidth="5" strokeLinecap="round" className="text-copper" />
       </svg>
       <span className="leading-none">
-        <span className={`block font-display font-extrabold tracking-[0.08em] text-[17px] sm:text-lg ${word}`}>
-          АРХИТЕКТОНИКА
-        </span>
-        <span className={`mt-1.5 block font-mono text-[9px] uppercase tracking-[0.3em] ${sub}`}>
-          инженерия интерьера
-        </span>
+        <span className={`block text-[16px] font-semibold tracking-[0.06em] ${word}`}>АРХИТЕКТОНИКА</span>
+        <span className={`mt-1.5 block text-[11px] leading-none ${sub}`}>ремонт квартир в Москве</span>
       </span>
     </a>
   );

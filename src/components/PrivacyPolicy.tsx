@@ -27,46 +27,49 @@ export default function PrivacyPolicy({ triggerClassName = "", label = "Поли
           role="dialog"
           aria-modal="true"
           aria-label="Политика конфиденциальности"
-          className="fixed inset-0 z-[80] flex items-end sm:items-center justify-center bg-ink/70 backdrop-blur-sm p-0 sm:p-6"
+          className="fixed inset-0 z-[80] flex items-end justify-center bg-ink/60 p-0 sm:items-center sm:p-6"
           onClick={() => setOpen(false)}
         >
           <div
-            className="w-full sm:max-w-lg max-h-[85vh] overflow-y-auto rounded-t-2xl sm:rounded-2xl bg-paper p-6 sm:p-8 text-ink shadow-2xl"
+            className="max-h-[85vh] w-full overflow-y-auto rounded-t-2xl bg-surface p-6 text-ink sm:max-w-lg sm:rounded-2xl sm:p-8"
             onClick={(e) => e.stopPropagation()}
           >
             <div className="flex items-start justify-between gap-6">
-              <h3 className="font-display font-extrabold text-xl">Политика конфиденциальности</h3>
+              <h3 className="text-[18px] font-medium">Политика конфиденциальности</h3>
               <button
                 type="button"
                 onClick={() => setOpen(false)}
                 aria-label="Закрыть"
-                className="rounded-full border border-line p-2 text-muted transition hover:border-copper hover:text-copper"
+                className="-mr-1 inline-flex h-9 w-9 shrink-0 items-center justify-center rounded-lg border border-line text-secondary transition-colors duration-150 hover:border-ink/25 hover:text-ink"
               >
-                <X size={18} />
+                <X size={17} strokeWidth={1.5} />
               </button>
             </div>
-            <div className="mt-4 space-y-3 text-sm leading-relaxed text-ink/85">
+            <div className="mt-4 space-y-3 text-[14px] leading-[22px] text-secondary">
               <p>
-                «АРХИТЕКТОНИКА» (ООО «АРХИТЕКТОНИКА», ИНН 7708456123) обрабатывает только те данные, которые вы оставляете в
-                форме: имя и телефон. Мы используем их исключительно для связи с вами по поводу заявки — замера, сметы и
-                договора.
+                ООО «АРХИТЕКТОНИКА», ИНН 7708456123, обрабатывает только те данные, которые вы оставляете в форме: имя и
+                телефон. Мы используем их для связи по поводу заявки, замера, сметы и договора.
               </p>
               <p>
-                Мы не передаём ваши данные третьим лицам, не используем их для рассылок без вашего согласия и храним не дольше
-                3 лет с момента последнего обращения.
+                Мы не передаём данные третьим лицам, не используем их для рассылок без вашего согласия и храним не
+                дольше 3 лет с момента последнего обращения.
               </p>
               <p>
-                Вы в любой момент можете попросить удалить свои данные: напишите на{" "}
-                <a href="mailto:privet@architectonic.ru" className="text-copper underline underline-offset-2">
+                Удалить данные можно в любой момент: напишите на{" "}
+                <a href="mailto:privet@architectonic.ru" className="text-copper-deep underline underline-offset-2">
                   privet@architectonic.ru
                 </a>{" "}
-                или позвоните <a href="tel:+74951204060" className="text-copper underline underline-offset-2">+7 (495) 120-40-60</a>.
+                или позвоните{" "}
+                <a href="tel:+74951204060" className="text-copper-deep underline underline-offset-2">
+                  +7 (495) 120-40-60
+                </a>
+                .
               </p>
             </div>
             <button
               type="button"
               onClick={() => setOpen(false)}
-              className="mt-6 w-full rounded-xl bg-ink px-4 py-3 font-display font-bold text-paper transition hover:bg-ink-2"
+              className="mt-6 h-11 w-full rounded-lg bg-ink px-4 text-[14px] font-medium text-paper transition-colors duration-150 hover:bg-ink-2"
             >
               Понятно
             </button>

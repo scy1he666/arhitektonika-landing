@@ -2,7 +2,6 @@ import { useCallback, useState } from "react";
 import { Phone, ArrowRight } from "lucide-react";
 import Header from "./components/Header";
 import Hero from "./components/Hero";
-import Marquee from "./components/Marquee";
 import Services, { type ServiceId } from "./components/Services";
 import Calculator from "./components/Calculator";
 import Portfolio from "./components/Portfolio";
@@ -32,11 +31,10 @@ export default function App() {
   }, []);
 
   return (
-    <div className="noise min-h-screen bg-paper font-body text-ink antialiased">
+    <div className="min-h-screen bg-paper font-body text-ink antialiased">
       <Header />
       <main>
         <Hero />
-        <Marquee />
         <Services onCalc={handleCalcRequest} />
         <Calculator type={calcType} onTypeChange={setCalcType} onSubmit={handleEstimate} />
         <Portfolio />
@@ -49,20 +47,24 @@ export default function App() {
       <Footer />
 
       {/* sticky mobile action bar */}
-      <div className="fixed inset-x-0 bottom-0 z-40 lg:hidden border-t border-ink/15 bg-paper/95 backdrop-blur-xl" style={{ paddingBottom: "env(safe-area-inset-bottom)" }}>
+      <div
+        className="fixed inset-x-0 bottom-0 z-40 border-t border-line bg-paper lg:hidden"
+        style={{ paddingBottom: "env(safe-area-inset-bottom)" }}
+      >
         <div className="grid grid-cols-2 gap-2 p-2">
           <a
             href="tel:+74951204060"
-            className="flex items-center justify-center gap-2 rounded-xl border border-ink/15 py-3.5 font-display text-sm font-extrabold text-ink active:scale-[0.98]"
+            className="flex h-11 items-center justify-center gap-2 rounded-lg border border-line text-[14px] font-medium text-ink transition-colors duration-150 active:bg-sunk"
           >
-            <Phone size={17} />
+            <Phone size={16} strokeWidth={1.5} aria-hidden="true" />
             Позвонить
           </a>
           <a
             href="#calculator"
-            className="flex items-center justify-center gap-2 rounded-xl bg-copper py-3.5 font-display text-sm font-extrabold text-ink active:scale-[0.98]"
+            className="flex h-11 items-center justify-center gap-2 rounded-lg bg-ink text-[14px] font-medium text-paper transition-colors duration-150 active:bg-ink-2"
           >
-            Смета <ArrowRight size={16} />
+            Смета
+            <ArrowRight size={16} strokeWidth={1.5} aria-hidden="true" />
           </a>
         </div>
       </div>

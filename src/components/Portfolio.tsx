@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useMemo, useState } from "react";
-import { X, ChevronLeft, ChevronRight, MapPin, Maximize2, ArrowRight } from "lucide-react";
+import { X, ChevronLeft, ChevronRight, ArrowRight } from "lucide-react";
 import Reveal from "./Reveal";
 import type { ServiceId } from "./Services";
 
@@ -23,18 +23,18 @@ type Project = {
 };
 
 const PROJECTS: Project[] = [
-  { img: hero, title: "Пентхаус с видом на город", place: "ЖК «Меркурий» · Москва-Сити", area: "184 м²", type: "designer", duration: "14 недель", year: "2025" },
-  { img: livingDark, title: "Гостиная с деревянной стеной", place: "ЖК «Селигер Сити» · САО", area: "92 м²", type: "capital", duration: "9 недель", year: "2025" },
-  { img: kitchenGraphite, title: "Кухня в графитовом и меди", place: "ЖК «Фили Град» · ЗАО", area: "78 м²", type: "designer", duration: "11 недель", year: "2024" },
-  { img: kitchenParis, title: "Квартира для молодой семьи", place: "Замоскворечье · ЦАО", area: "86 м²", type: "capital", duration: "10 недель", year: "2024" },
-  { img: kitchenIsland, title: "Островная кухня-гостиная", place: "ЖК «АРТ4» · Одинцово", area: "110 м²", type: "designer", duration: "12 недель", year: "2025" },
-  { img: livingWarm, title: "Семейная гостиная за 4 недели", place: "ЖК «Люберецкие поля» · Люберцы", area: "64 м²", type: "cosmetic", duration: "4 недели", year: "2024" },
-  { img: bedroomScandi, title: "Спальня в скандинавском духе", place: "КП «Скандинавия» · Новая Москва", area: "71 м²", type: "cosmetic", duration: "3 недели", year: "2025" },
-  { img: bedroomAttic, title: "Мансардная спальня в доме", place: "Истринский район · частный дом", area: "96 м²", type: "designer", duration: "13 недель", year: "2023" },
+  { img: hero, title: "Пентхаус с видом на город", place: "ЖК «Меркурий», Москва-Сити", area: "184 м²", type: "designer", duration: "14 недель", year: "2025" },
+  { img: livingDark, title: "Гостиная с деревянной стеной", place: "ЖК «Селигер Сити», САО", area: "92 м²", type: "capital", duration: "9 недель", year: "2025" },
+  { img: kitchenGraphite, title: "Кухня в графитовом и меди", place: "ЖК «Фили Град», ЗАО", area: "78 м²", type: "designer", duration: "11 недель", year: "2024" },
+  { img: kitchenParis, title: "Квартира для молодой семьи", place: "Замоскворечье, ЦАО", area: "86 м²", type: "capital", duration: "10 недель", year: "2024" },
+  { img: kitchenIsland, title: "Островная кухня-гостиная", place: "ЖК «АРТ4», Одинцово", area: "110 м²", type: "designer", duration: "12 недель", year: "2025" },
+  { img: livingWarm, title: "Семейная гостиная за 4 недели", place: "ЖК «Люберецкие поля», Люберцы", area: "64 м²", type: "cosmetic", duration: "4 недели", year: "2024" },
+  { img: bedroomScandi, title: "Спальня в скандинавском духе", place: "КП «Скандинавия», Новая Москва", area: "71 м²", type: "cosmetic", duration: "3 недели", year: "2025" },
+  { img: bedroomAttic, title: "Мансардная спальня в доме", place: "Истринский район, частный дом", area: "96 м²", type: "designer", duration: "13 недель", year: "2023" },
 ];
 
 const FILTERS: Array<{ id: ServiceId | "all"; label: string }> = [
-  { id: "all", label: "Все проекты" },
+  { id: "all", label: "Все" },
   { id: "designer", label: "Дизайнерский" },
   { id: "capital", label: "Капитальный" },
   { id: "cosmetic", label: "Косметический" },
@@ -52,15 +52,12 @@ export default function Portfolio() {
   );
 
   const close = useCallback(() => setLightbox(null), []);
-  const step = useCallback(
-    (dir: 1 | -1) => {
-      setLightbox((cur) => {
-        if (cur === null) return cur;
-        return (cur + dir + PROJECTS.length) % PROJECTS.length;
-      });
-    },
-    []
-  );
+  const step = useCallback((dir: 1 | -1) => {
+    setLightbox((cur) => {
+      if (cur === null) return cur;
+      return (cur + dir + PROJECTS.length) % PROJECTS.length;
+    });
+  }, []);
 
   useEffect(() => {
     if (lightbox === null) return;
@@ -80,22 +77,18 @@ export default function Portfolio() {
   const current = lightbox !== null ? PROJECTS[lightbox] : null;
 
   return (
-    <section id="portfolio" className="py-16 sm:py-24 scroll-mt-24" aria-label="Портфолио">
+    <section id="portfolio" className="scroll-mt-24 border-t border-line py-20 lg:py-28" aria-label="Проекты">
       <div className="mx-auto max-w-7xl px-4 sm:px-6">
-        <div className="flex flex-col md:flex-row md:items-end md:justify-between gap-6">
-          <div className="max-w-2xl">
-            <p className="font-mono text-[10px] sm:text-[11px] uppercase tracking-[0.24em] text-copper-deep">03 — Портфолио</p>
-            <h2 className="mt-3 font-display font-extrabold tracking-[-0.02em] text-ink text-4xl sm:text-5xl leading-[1.05]">
-              Сдано и <em className="font-serif italic font-medium text-copper">обжито</em>
-            </h2>
-          </div>
-          <p className="max-w-xs text-sm text-muted leading-relaxed">
-            Каждый объект сдаём по акту и передаём фотоальбом. Вот восемь из 480+ сданных квартир.
+        <div className="flex flex-col gap-4 md:flex-row md:items-end md:justify-between">
+          <h2 className="max-w-[34rem] text-[28px] font-medium leading-[1.15] tracking-[-0.01em] text-ink sm:text-[34px]">
+            Восемь квартир из 480 сданных
+          </h2>
+          <p className="max-w-[27rem] text-[16px] leading-[24px] text-secondary">
+            Каждый объект сдаём по акту и отдаём фотоальбом. Фильтр по типу ремонта, клик открывает снимки.
           </p>
         </div>
 
-        {/* filters */}
-        <div className="mt-8 flex flex-wrap items-center gap-2" role="group" aria-label="Фильтр по типу ремонта">
+        <div className="mt-8 flex flex-wrap items-center gap-x-6 gap-y-2" role="group" aria-label="Фильтр по типу ремонта">
           {FILTERS.map((f) => {
             const active = filter === f.id;
             const count = f.id === "all" ? PROJECTS.length : PROJECTS.filter((p) => p.type === f.id).length;
@@ -104,113 +97,95 @@ export default function Portfolio() {
                 key={f.id}
                 onClick={() => setFilter(f.id)}
                 aria-pressed={active}
-                className={`rounded-full border px-4 py-2 font-mono text-[10px] sm:text-[11px] uppercase tracking-[0.16em] transition-all duration-300 ${
-                  active ? "border-ink bg-ink text-paper" : "border-line text-ink/70 hover:border-copper hover:text-copper"
+                className={`border-b pb-1 text-[14px] transition-colors duration-150 ${
+                  active ? "border-ink text-ink" : "border-transparent text-secondary hover:text-ink"
                 }`}
               >
-                {f.label} <span className={active ? "text-copper-light" : "text-muted"}>· {count}</span>
+                {f.label} <span className="tabular-nums text-muted">{count}</span>
               </button>
             );
           })}
         </div>
 
-        {/* masonry grid */}
-        <div className="mt-8 columns-1 sm:columns-2 lg:columns-3 gap-5 [&>*]:mb-5">
+        <div className="mt-8 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
           {visible.map(({ p, i }) => (
-            <Reveal as="div" key={p.title} className="break-inside-avoid">
+            <Reveal key={p.title}>
               <button
                 type="button"
                 onClick={() => setLightbox(i)}
-                className="group relative block w-full overflow-hidden rounded-2xl border border-line text-left focus:outline-none focus-visible:ring-4 focus-visible:ring-copper/40"
+                className="group block w-full text-left focus:outline-none focus-visible:ring-2 focus-visible:ring-copper focus-visible:ring-offset-4 focus-visible:ring-offset-paper"
                 aria-label={`Открыть проект: ${p.title}`}
               >
-                <img
-                  src={p.img}
-                  alt={`${p.title} — ${p.place}`}
-                  loading="lazy"
-                  className="w-full object-cover transition-transform duration-[900ms] ease-[cubic-bezier(0.22,1,0.36,1)] group-hover:scale-[1.06]"
-                />
-                <div className="absolute inset-0 bg-gradient-to-t from-ink/85 via-ink/15 to-transparent opacity-90 transition-opacity duration-500 group-hover:opacity-100" aria-hidden="true" />
-                <div className="absolute inset-x-0 bottom-0 p-4 sm:p-5">
-                  <span className="inline-flex items-center gap-1.5 rounded-full bg-paper/12 px-2.5 py-1 font-mono text-[8.5px] sm:text-[9px] uppercase tracking-[0.18em] text-paper/90 backdrop-blur-sm">
-                    {TYPE_LABEL[p.type]} ремонт · {p.year}
-                  </span>
-                  <span className="mt-2 flex items-end justify-between gap-3">
-                    <span>
-                      <span className="block font-display font-extrabold text-paper text-base sm:text-lg leading-tight">{p.title}</span>
-                      <span className="mt-1 flex items-center gap-1 font-mono text-[9px] sm:text-[10px] text-paper/65">
-                        <MapPin size={10} /> {p.place} · {p.area} · {p.duration}
-                      </span>
-                    </span>
-                    <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full border border-paper/25 text-paper/90 transition-all duration-300 group-hover:border-copper group-hover:bg-copper group-hover:text-ink">
-                      <Maximize2 size={16} />
-                    </span>
-                  </span>
-                </div>
+                <span className="relative block aspect-[4/3] overflow-hidden rounded-xl bg-sunk">
+                  <img
+                    src={p.img}
+                    alt={`${p.title}, ${p.place}`}
+                    loading="lazy"
+                    className="h-full w-full object-cover transition-[opacity] duration-200 group-hover:opacity-90"
+                  />
+                </span>
+                <span className="mt-3 block text-[15px] font-medium leading-tight text-ink">{p.title}</span>
+                <span className="mt-1 block text-[13px] leading-[18px] tabular-nums text-secondary">
+                  {p.place}, {p.area}, {p.duration}
+                </span>
               </button>
             </Reveal>
           ))}
         </div>
 
-        <div className="mt-2 flex justify-center">
-          <a href="#lead" className="group inline-flex items-center gap-2 font-display font-bold text-ink transition hover:text-copper">
-            Хочу так же — хотите обсудить вашу квартиру?
-            <ArrowRight size={17} className="transition-transform duration-300 group-hover:translate-x-1.5" />
-          </a>
-        </div>
+        <a
+          href="#lead"
+          className="mt-10 inline-flex items-center gap-2 text-[15px] font-medium text-ink transition-colors duration-150 hover:text-copper"
+        >
+          Обсудить вашу квартиру
+          <ArrowRight size={17} strokeWidth={1.5} aria-hidden="true" />
+        </a>
       </div>
 
-      {/* lightbox */}
       {current && (
         <div
           role="dialog"
           aria-modal="true"
           aria-label={current.title}
-          className="fixed inset-0 z-[80] flex flex-col bg-ink/92 backdrop-blur-md"
+          className="fixed inset-0 z-[80] flex flex-col bg-ink/95"
           onClick={close}
         >
-          <div className="flex items-center justify-between px-4 sm:px-6 h-16">
-            <p className="font-mono text-[10px] sm:text-[11px] uppercase tracking-[0.22em] text-paper/60">
-              Проект {String((lightbox ?? 0) + 1).padStart(2, "0")} / {String(PROJECTS.length).padStart(2, "0")}
+          <div className="flex h-16 items-center justify-between px-4 sm:px-6">
+            <p className="text-[13px] tabular-nums text-paper/70">
+              {String((lightbox ?? 0) + 1)} из {PROJECTS.length}
             </p>
             <button
               type="button"
               onClick={close}
               aria-label="Закрыть"
-              className="rounded-full border border-paper/20 p-2.5 text-paper/80 transition hover:border-copper hover:text-copper"
+              className="inline-flex h-9 w-9 items-center justify-center rounded-lg text-paper/75 transition-colors duration-150 hover:bg-paper/10 hover:text-paper"
             >
-              <X size={20} />
+              <X size={18} strokeWidth={1.5} />
             </button>
           </div>
 
-          <div className="relative flex flex-1 items-center justify-center px-2 sm:px-16 pb-2" onClick={(e) => e.stopPropagation()}>
+          <div className="relative flex flex-1 items-center justify-center px-2 pb-2 sm:px-16" onClick={(e) => e.stopPropagation()}>
             <button
               type="button"
               onClick={() => step(-1)}
               aria-label="Предыдущий проект"
-              className="absolute left-2 sm:left-5 top-1/2 z-10 -translate-y-1/2 rounded-full border border-paper/20 bg-ink/60 p-3 text-paper/85 transition hover:border-copper hover:text-copper"
+              className="absolute left-2 top-1/2 z-10 inline-flex h-10 w-10 -translate-y-1/2 items-center justify-center rounded-lg text-paper/75 transition-colors duration-150 hover:bg-paper/10 hover:text-paper sm:left-5"
             >
-              <ChevronLeft size={22} />
+              <ChevronLeft size={20} strokeWidth={1.5} />
             </button>
-            <figure className="max-w-5xl w-full">
+            <figure className="w-full max-w-5xl">
               <img
                 src={current.img}
-                alt={`${current.title} — ${current.place}`}
-                className="max-h-[64vh] sm:max-h-[70vh] w-full rounded-2xl object-contain"
+                alt={`${current.title}, ${current.place}`}
+                className="max-h-[62vh] w-full rounded-xl object-contain sm:max-h-[70vh]"
               />
-              <figcaption className="mt-4 flex flex-col sm:flex-row sm:items-end sm:justify-between gap-3 px-1">
+              <figcaption className="mt-4 flex flex-col gap-2 px-1 sm:flex-row sm:items-end sm:justify-between">
                 <div>
-                  <p className="font-display font-extrabold text-xl sm:text-2xl text-paper leading-tight">{current.title}</p>
-                  <p className="mt-1 flex items-center gap-1.5 font-mono text-[10px] sm:text-[11px] uppercase tracking-[0.16em] text-paper/55">
-                    <MapPin size={11} /> {current.place}
+                  <p className="text-[18px] font-medium leading-tight text-paper">{current.title}</p>
+                  <p className="mt-1 text-[13px] text-paper/65">
+                    {current.place}, {current.area}, {TYPE_LABEL[current.type].toLowerCase()} ремонт, {current.duration},{" "}
+                    {current.year}
                   </p>
-                </div>
-                <div className="flex flex-wrap gap-2">
-                  {[current.area, TYPE_LABEL[current.type], current.duration, current.year].map((chip) => (
-                    <span key={chip} className="rounded-full border border-paper/20 px-3 py-1.5 font-mono text-[9.5px] sm:text-[10px] uppercase tracking-[0.16em] text-paper/75">
-                      {chip}
-                    </span>
-                  ))}
                 </div>
               </figcaption>
             </figure>
@@ -218,9 +193,9 @@ export default function Portfolio() {
               type="button"
               onClick={() => step(1)}
               aria-label="Следующий проект"
-              className="absolute right-2 sm:right-5 top-1/2 z-10 -translate-y-1/2 rounded-full border border-paper/20 bg-ink/60 p-3 text-paper/85 transition hover:border-copper hover:text-copper"
+              className="absolute right-2 top-1/2 z-10 inline-flex h-10 w-10 -translate-y-1/2 items-center justify-center rounded-lg text-paper/75 transition-colors duration-150 hover:bg-paper/10 hover:text-paper sm:right-5"
             >
-              <ChevronRight size={22} />
+              <ChevronRight size={20} strokeWidth={1.5} />
             </button>
           </div>
         </div>

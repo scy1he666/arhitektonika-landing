@@ -1,70 +1,52 @@
-import { Ruler, ScrollText, Zap, Layers, PaintRoller, KeyRound, Camera, ArrowRight } from "lucide-react";
+import { ArrowRight } from "lucide-react";
 import Reveal from "./Reveal";
 
 const STEPS = [
-  { icon: Ruler, num: "01", title: "Заявка и замер", text: "Оставляете заявку — инженер выезжает в удобный день. Замер и консультация бесплатно, в день обращения." },
-  { icon: ScrollText, num: "02", title: "Смета и договор", text: "Смета на 40+ позиций в течение 2 дней. Цена и сроки фиксируются в договоре — никаких «плюс ещё за штробы»." },
-  { icon: Zap, num: "03", title: "Инженерка и демонтаж", text: "Новая электрика, сантехразводка, слаботочка. Снос перегородок и вывоз мусора в контейнерах." },
-  { icon: Layers, num: "04", title: "Черновые работы", text: "Стяжка, штукатурка по маякам, шумоизоляция, ГКЛ-конструкции. Промежуточные акты на каждый узел." },
-  { icon: PaintRoller, num: "05", title: "Чистовая отделка", text: "Плитка, стены, потолок, пол, двери и сантехника. Уборка каждый вечер — вы всегда видите чистый объект." },
-  { icon: KeyRound, num: "06", title: "Приёмка и гарантия", text: "Акт сдачи, ключи и 5 лет гарантии. Через 12 месяцев — бесплатный сервисный чек-ап квартиры." },
+  { num: "1", title: "Заявка и замер", text: "Инженер выезжает в удобный день. Замер и консультация бесплатные." },
+  { num: "2", title: "Смета и договор", text: "Смета на 40 с лишним позиций за 2 дня. Цена и срок фиксируются в договоре." },
+  { num: "3", title: "Инженерия и демонтаж", text: "Электрика, разводка сантехники, слаботочка, снос перегородок и вывоз мусора." },
+  { num: "4", title: "Черновые работы", text: "Стяжка, штукатурка по маякам, шумоизоляция, ГКЛ. Промежуточный акт на каждый узел." },
+  { num: "5", title: "Чистовая отделка", text: "Плитка, стены, потолок, пол, двери, сантехника. Уборка каждый вечер." },
+  { num: "6", title: "Приёмка и гарантия", text: "Акт сдачи и 5 лет гарантии. Через 12 месяцев бесплатный сервисный чек-ап." },
 ];
 
 export default function Process() {
   return (
-    <section id="process" className="relative border-t border-line bg-[#f3f1ec] py-16 sm:py-24 scroll-mt-24" aria-label="Этапы работы">
+    <section id="process" className="scroll-mt-24 border-t border-line bg-sunk py-20 lg:py-28" aria-label="Этапы работы">
       <div className="mx-auto max-w-7xl px-4 sm:px-6">
-        <p className="font-mono text-[10px] sm:text-[11px] uppercase tracking-[0.24em] text-copper-deep">04 — Как мы работаем</p>
-        <div className="mt-3 flex flex-col lg:flex-row lg:items-end lg:justify-between gap-6">
-          <h2 className="max-w-2xl font-display font-extrabold tracking-[-0.02em] text-ink text-4xl sm:text-5xl leading-[1.05]">
-            Шесть шагов — <em className="font-serif italic font-medium text-copper">ни одного сюрприза</em>
+        <div className="flex flex-col gap-4 md:flex-row md:items-end md:justify-between">
+          <h2 className="max-w-[30rem] text-[28px] font-medium leading-[1.15] tracking-[-0.01em] text-ink sm:text-[34px]">
+            Шесть этапов, оплата после акта
           </h2>
-          <p className="max-w-xs text-sm text-muted leading-relaxed">
-            Каждый этап закрывается актом. Платите за работу только после подписания акта по этапу — не вперёд.
+          <p className="max-w-[27rem] text-[16px] leading-[24px] text-secondary">
+            Платите за этап только после подписания акта, не вперёд.
           </p>
         </div>
 
-        <ol className="mt-12 grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
+        <ol className="mt-10 grid gap-x-10 border-t border-line lg:mt-14 lg:grid-cols-3">
           {STEPS.map((step, i) => (
-            <Reveal as="li" key={step.num} delay={i * 70}>
-              <div className="group relative h-full overflow-hidden rounded-2xl border border-line bg-white p-6 transition-colors duration-300 hover:border-copper/50">
-                <span
-                  aria-hidden="true"
-                  className="absolute -right-2 -top-4 font-display font-extrabold text-[84px] leading-none text-ink/[0.05] transition-colors duration-300 group-hover:text-copper/15"
-                >
+            <Reveal as="li" key={step.num} delay={i * 40}>
+              <div className="grid grid-cols-[32px_1fr] gap-x-4 gap-y-1 border-b border-line py-6">
+                <span className="text-[13px] tabular-nums leading-6 text-muted" aria-hidden="true">
                   {step.num}
                 </span>
-                <span className="inline-flex h-11 w-11 items-center justify-center rounded-xl border border-copper/30 bg-copper/10 text-copper-deep transition-transform duration-300 group-hover:-translate-y-0.5">
-                  <step.icon size={20} />
-                </span>
-                <h3 className="relative mt-4 font-display font-extrabold text-lg text-ink">{step.title}</h3>
-                <p className="relative mt-1.5 text-[13px] leading-relaxed text-muted">{step.text}</p>
-                <span aria-hidden="true" className="absolute bottom-0 left-0 h-[3px] w-0 bg-copper transition-all duration-500 group-hover:w-full" />
+                <h3 className="text-[16px] font-medium leading-6 text-ink">{step.title}</h3>
+                <p className="col-start-2 max-w-[22rem] text-[14px] leading-[20px] text-secondary">{step.text}</p>
               </div>
             </Reveal>
           ))}
         </ol>
 
-        {/* photo-report callout */}
-        <div className="mt-6 flex flex-col md:flex-row md:items-center justify-between gap-5 rounded-2xl border border-copper/30 bg-copper/[0.08] p-5 sm:p-6">
-          <div className="flex items-start gap-4">
-            <span className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-copper text-ink">
-              <Camera size={22} />
-            </span>
-            <div>
-              <p className="font-display font-extrabold text-ink">Каждый вечер в 19:00 — фотоотчёт в ваш чат</p>
-              <p className="mt-1 text-[13px] leading-relaxed text-ink/75">
-                Что сделано сегодня, что будет завтра, сколько ушло материалов и денег по этапу. Вы контролируете ремонт
-                с телефона, даже находясь в другом городе.
-              </p>
-            </div>
-          </div>
+        <div className="mt-12 flex flex-col gap-5 rounded-2xl bg-surface p-6 sm:flex-row sm:items-center sm:justify-between">
+          <p className="max-w-[36rem] text-[15px] leading-[22px] text-ink">
+            Каждый вечер в 19:00 присылаем фотоотчёт: что сделано, что завтра, сколько ушло материалов и денег по этапу.
+          </p>
           <a
             href="#lead"
-            className="group inline-flex shrink-0 items-center justify-center gap-2 rounded-full bg-ink px-6 py-3.5 font-display text-sm font-bold text-paper transition hover:bg-copper hover:text-ink"
+            className="inline-flex h-11 shrink-0 items-center justify-center gap-2 rounded-lg bg-ink px-5 text-[14px] font-medium text-paper transition-colors duration-150 hover:bg-ink-2"
           >
-            Хочу так
-            <ArrowRight size={16} className="transition-transform duration-300 group-hover:translate-x-1" />
+            Записаться на замер
+            <ArrowRight size={16} strokeWidth={1.5} aria-hidden="true" />
           </a>
         </div>
       </div>

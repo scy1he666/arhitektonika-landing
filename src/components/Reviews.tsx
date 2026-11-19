@@ -1,151 +1,115 @@
 import { useEffect, useState } from "react";
-import { Star, ChevronLeft, ChevronRight, Quote, BadgeCheck } from "lucide-react";
+import { ChevronLeft, ChevronRight } from "lucide-react";
 import Reveal from "./Reveal";
 
 const REVIEWS = [
   {
-    text: "Смета не изменилась ни на копейку, хотя мы поменяли плитку в процессе — пересчитали отдельной строкой, и только после моего «ок». Прораб всегда на месте, фото каждый вечер. Лучший сервисный опыт в нашей жизни.",
+    text: "Смета не изменилась ни на копейку, хотя мы поменяли плитку в процессе. Пересчитали отдельной строкой и только после моего «ок». Прораб всегда на месте, фото каждый вечер.",
     author: "Анна Ковалёва",
-    meta: "ЖК «Селигер Сити» · капитальный ремонт · 8 недель",
+    meta: "ЖК «Селигер Сити», капитальный ремонт, 8 недель",
   },
   {
-    text: "Жили в другой стране и делали ремонт дистанционно. Каждый вечер — фото, раз в две недели — видеозвонок с объекта. Ключи получили в день, который стоял в договоре. Грамотно, чисто, без предоплаты.",
+    text: "Жили в другой стране и делали ремонт дистанционно. Каждый вечер фото, раз в две недели видеозвонок с объекта. Ключи получили в день, который стоял в договоре.",
     author: "Игорь и Марина Дементьевы",
-    meta: "Замоскворечье · дизайнерский ремонт · 12 недель",
+    meta: "Замоскворечье, дизайнерский ремонт, 12 недель",
   },
   {
-    text: "Взяли в рассрочку 0% на 12 месяцев — два документа, одобрение за день. Сделали перепланировку: снесли кладовку, узаконили расширенную кухню-гостиную. Согласование взяли полностью на себя.",
+    text: "Взяли рассрочку 0% на 12 месяцев, два документа, одобрение за день. Перепланировку согласовали за нас: снесли кладовку, узаконили расширенную кухню-гостиную.",
     author: "Дмитрий Орлов",
-    meta: "ЖК «Фили Град» · капитальный ремонт + согласование",
+    meta: "ЖК «Фили Град», капитальный ремонт и согласование",
   },
   {
-    text: "Косметический ремонт студии за 3 недели: красили, стелили кварц-винил, меняли сантехнику. Мусора было так мало, что даже не понадобился контейнер на улицу. Съехали с съёмной квартиры в чистоту.",
+    text: "Косметический ремонт студии за 3 недели: покрасили, положили кварц-винил, поменяли сантехнику. Мусора было так мало, что контейнер на улицу не понадобился.",
     author: "Светлана Рашидова",
-    meta: "Новая Москва · косметический ремонт · 3 недели",
+    meta: "Новая Москва, косметический ремонт, 3 недели",
   },
   {
-    text: "Делали пентхаус под сдачу. Команда работала в две смены, уложились в 14 недель. Умный дом, парящие потолки, скрытые карнизы — всё собрано идеально. Уже второй объект с ними.",
+    text: "Делали пентхаус под сдачу, команда работала в две смены и уложилась в 14 недель. Умный дом, парящие потолки, скрытые карнизы собраны идеально. Это второй объект с ними.",
     author: "Роман Гельфанд",
-    meta: "Москва-Сити · дизайнерский ремонт · 184 м²",
+    meta: "Москва-Сити, дизайнерский ремонт, 184 м²",
   },
   {
-    text: "Дом за городом, 200 м², отопление и электрика с нуля. Зимой приехали на Новый год — тепло, тихо, работает как швейцарские часы. Через год заезжали на чек-ап: нашли и бесплатно устранили два мелких момента.",
+    text: "Дом за городом, 200 м², отопление и электрика с нуля. Через год приехали на чек-ап: нашли и бесплатно устранили два мелких замечания.",
     author: "Елена Тихонова",
-    meta: "Истринский район · дизайнерский ремонт дома",
+    meta: "Истринский район, дизайнерский ремонт дома",
   },
 ];
 
-const AUTOPLAY_MS = 6500;
+const RATINGS = [
+  { source: "Яндекс Карты", value: "4,9" },
+  { source: "2ГИС", value: "5,0" },
+  { source: "Отзовик", value: "4,8" },
+];
 
 export default function Reviews() {
   const [index, setIndex] = useState(0);
-  const [paused, setPaused] = useState(false);
   const count = REVIEWS.length;
-
-  useEffect(() => {
-    if (paused) return;
-    const id = window.setInterval(() => setIndex((i) => (i + 1) % count), AUTOPLAY_MS);
-    return () => window.clearInterval(id);
-  }, [paused, count]);
-
   const review = REVIEWS[index];
 
-  return (
-    <section id="reviews" className="border-t border-line py-16 sm:py-24 scroll-mt-24" aria-label="Отзывы клиентов">
-      <div className="mx-auto max-w-7xl px-4 sm:px-6">
-        <p className="font-mono text-[10px] sm:text-[11px] uppercase tracking-[0.24em] text-copper-deep">06 — Отзывы</p>
+  useEffect(() => {
+    setIndex((i) => (i >= count ? 0 : i));
+  }, [count]);
 
-        <div className="mt-6 grid lg:grid-cols-12 gap-8 lg:gap-12">
-          {/* summary column */}
+  return (
+    <section id="reviews" className="scroll-mt-24 border-t border-line py-20 lg:py-28" aria-label="Отзывы клиентов">
+      <div className="mx-auto max-w-7xl px-4 sm:px-6">
+        <h2 className="max-w-[30rem] text-[28px] font-medium leading-[1.15] tracking-[-0.01em] text-ink sm:text-[34px]">
+          Отзывы с актами сдачи
+        </h2>
+
+        <div className="mt-10 grid gap-8 lg:mt-14 lg:grid-cols-12 lg:gap-10">
           <div className="lg:col-span-4">
-            <h2 className="font-display font-extrabold tracking-[-0.02em] text-ink text-4xl sm:text-5xl leading-[1.05]">
-              Говорят <em className="font-serif italic font-medium text-copper">клиенты</em>
-            </h2>
-            <Reveal className="mt-8">
-              <div className="rounded-3xl border border-line bg-white p-6 sm:p-7">
-                <div className="flex items-end gap-4">
-                  <span className="font-display font-extrabold text-7xl leading-none text-ink">4.9</span>
-                  <div className="pb-1.5">
-                    <div className="flex gap-0.5" aria-label="Рейтинг 4.9 из 5">
-                      {Array.from({ length: 5 }).map((_, i) => (
-                        <Star key={i} size={20} className="fill-copper text-copper" />
-                      ))}
-                    </div>
-                    <p className="mt-1.5 text-xs font-semibold text-ink">1 284 оценки</p>
-                  </div>
+            <div className="flex items-baseline gap-3">
+              <p className="text-[40px] font-medium leading-none tabular-nums text-ink">4,9</p>
+              <p className="text-[14px] text-secondary">из 5, 1 284 оценки</p>
+            </div>
+            <dl className="mt-6 border-t border-line">
+              {RATINGS.map((r) => (
+                <div key={r.source} className="flex items-baseline justify-between gap-4 border-b border-line py-2.5">
+                  <dt className="text-[13px] text-secondary">{r.source}</dt>
+                  <dd className="text-[13px] tabular-nums text-ink">{r.value}</dd>
                 </div>
-                <div className="mt-5 flex flex-wrap gap-2">
-                  {["Яндекс Карты · 4.9", "2ГИС · 5.0", "Отзовик · 4.8"].map((chip) => (
-                    <span key={chip} className="rounded-full border border-line bg-paper px-3 py-1.5 font-mono text-[9.5px] uppercase tracking-[0.14em] text-ink/75">
-                      {chip}
-                    </span>
-                  ))}
-                </div>
-                <p className="mt-5 border-t border-line pt-4 inline-flex items-center gap-2 text-[11px] text-muted">
-                  <BadgeCheck size={14} className="text-copper" />
-                  Все отзывы — от реальных клиентов с актами сдачи
-                </p>
-              </div>
-            </Reveal>
+              ))}
+            </dl>
+            <p className="mt-4 max-w-[16rem] text-[13px] leading-[18px] text-muted">
+              Все отзывы оставляют клиенты после подписания акта сдачи.
+            </p>
           </div>
 
-          {/* carousel column */}
-          <div
-            className="lg:col-span-8 flex flex-col"
-            onMouseEnter={() => setPaused(true)}
-            onMouseLeave={() => setPaused(false)}
-          >
-            <div className="relative flex-1 rounded-3xl border border-line bg-ink p-6 sm:p-10 text-paper flex flex-col justify-between overflow-hidden">
-              <Quote aria-hidden="true" size={110} strokeWidth={1} className="absolute -top-4 -left-3 text-copper/15" />
-              <blockquote key={index} className="review-enter relative">
-                <p className="font-serif italic text-[19px] sm:text-2xl leading-[1.35] text-paper/95">
-                  «{review.text}»
-                </p>
-                <footer className="mt-6">
-                  <p className="font-display font-extrabold text-base sm:text-lg text-paper">{review.author}</p>
-                  <p className="mt-1 font-mono text-[9.5px] sm:text-[10px] uppercase tracking-[0.18em] text-paper/50">{review.meta}</p>
-                </footer>
+          <Reveal className="lg:col-span-8">
+            <figure className="flex h-full flex-col rounded-2xl bg-surface p-6 sm:p-8">
+              <blockquote key={index} className="review-enter flex-1">
+                <p className="text-[18px] leading-[28px] text-ink sm:text-[20px] sm:leading-[30px]">«{review.text}»</p>
               </blockquote>
-
-              <div className="relative mt-8 flex items-center justify-between gap-4">
+              <figcaption className="mt-6 flex flex-wrap items-end justify-between gap-4 border-t border-line pt-5">
+                <div>
+                  <p className="text-[15px] font-medium text-ink">{review.author}</p>
+                  <p className="mt-0.5 text-[13px] text-muted">{review.meta}</p>
+                </div>
                 <div className="flex items-center gap-2">
+                  <span className="mr-1 text-[13px] tabular-nums text-muted">
+                    {index + 1} / {count}
+                  </span>
                   <button
                     type="button"
                     onClick={() => setIndex((i) => (i - 1 + count) % count)}
                     aria-label="Предыдущий отзыв"
-                    className="rounded-full border border-paper/20 p-2.5 text-paper/80 transition hover:border-copper hover:text-copper"
+                    className="inline-flex h-9 w-9 items-center justify-center rounded-lg border border-line text-ink transition-colors duration-150 hover:border-ink/25"
                   >
-                    <ChevronLeft size={18} />
+                    <ChevronLeft size={17} strokeWidth={1.5} />
                   </button>
                   <button
                     type="button"
                     onClick={() => setIndex((i) => (i + 1) % count)}
                     aria-label="Следующий отзыв"
-                    className="rounded-full border border-paper/20 p-2.5 text-paper/80 transition hover:border-copper hover:text-copper"
+                    className="inline-flex h-9 w-9 items-center justify-center rounded-lg border border-line text-ink transition-colors duration-150 hover:border-ink/25"
                   >
-                    <ChevronRight size={18} />
+                    <ChevronRight size={17} strokeWidth={1.5} />
                   </button>
                 </div>
-                <p className="font-mono text-[10px] sm:text-[11px] tracking-[0.25em] text-paper/50">
-                  {String(index + 1).padStart(2, "0")} <span className="text-copper">/</span> {String(count).padStart(2, "0")}
-                </p>
-              </div>
-            </div>
-
-            {/* dots */}
-            <div className="mt-4 flex items-center justify-center gap-2" role="tablist" aria-label="Выбор отзыва">
-              {REVIEWS.map((_, i) => (
-                <button
-                  key={i}
-                  role="tab"
-                  aria-selected={i === index}
-                  aria-label={`Отзыв ${i + 1}`}
-                  onClick={() => setIndex(i)}
-                  className={`h-1.5 rounded-full transition-all duration-400 ${i === index ? "w-8 bg-copper" : "w-2.5 bg-ink/20 hover:bg-ink/40"}`}
-                />
-              ))}
-            </div>
-          </div>
+              </figcaption>
+            </figure>
+          </Reveal>
         </div>
       </div>
     </section>

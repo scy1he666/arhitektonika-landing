@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useState } from "react";
-import { Calculator as CalculatorIcon, ArrowRight, BadgePercent, Info } from "lucide-react";
+import { ArrowRight, Check } from "lucide-react";
 import Reveal from "./Reveal";
 import type { ServiceId } from "./Services";
 
@@ -67,7 +67,7 @@ export default function Calculator({ type, onTypeChange, onSubmit }: Props) {
     {
       key: "design",
       label: "Дизайн-проект",
-      hint: type === "designer" ? "включён в дизайнерский ремонт" : "+1 800 ₽/м²",
+      hint: type === "designer" ? "уже в дизайнерском ремонте" : "+1 800 ₽/м²",
       checked: type === "designer" || designProject,
       set: setDesignProject,
       disabled: type === "designer",
@@ -77,31 +77,37 @@ export default function Calculator({ type, onTypeChange, onSubmit }: Props) {
     { key: "smart", label: "Умный дом (свет, климат, доступ)", hint: "+120 000 ₽", checked: smartHome, set: setSmartHome },
   ];
 
+  const rows = [
+    { label: `Работы, ${area} м²`, value: fmt(calc.works) },
+    { label: "Материалы по оптовым ценам", value: calc.materials > 0 ? fmt(calc.materials) : null },
+    { label: "Дизайн-проект", value: calc.design > 0 ? fmt(calc.design) : null },
+    { label: "Демонтаж и вывоз", value: calc.demo > 0 ? fmt(calc.demo) : null },
+    { label: "Мебель на заказ", value: calc.furn > 0 ? fmt(calc.furn) : null },
+    { label: "Умный дом", value: calc.smart > 0 ? fmt(calc.smart) : null },
+    { label: "Скидка по заявке с сайта", value: `−${fmt(calc.discount)}` },
+  ].filter((r) => r.value);
+
   return (
-    <section id="calculator" className="relative scroll-mt-24 bg-ink text-paper py-16 sm:py-24" aria-label="Калькулятор стоимости">
-      {/* faint glow */}
-      <div aria-hidden="true" className="pointer-events-none absolute -top-32 left-1/2 h-96 w-[42rem] max-w-full -translate-x-1/2 rounded-full bg-copper/15 blur-[140px]" />
+    <section id="calculator" className="scroll-mt-24 border-t border-line bg-sunk py-20 lg:py-28" aria-label="Калькулятор стоимости">
+      <div className="mx-auto max-w-7xl px-4 sm:px-6">
+        <h2 className="max-w-[34rem] text-[28px] font-medium leading-[1.15] tracking-[-0.01em] text-ink sm:text-[34px]">
+          Смета за пару минут
+        </h2>
+        <p className="mt-3 max-w-[34rem] text-[16px] leading-[24px] text-secondary">
+          Итог пересчитывается при каждом изменении. Точную цифру фиксируем в договоре после бесплатного замера.
+        </p>
 
-      <div className="relative mx-auto max-w-7xl px-4 sm:px-6">
-        <div className="flex flex-col lg:flex-row lg:items-end lg:justify-between gap-6">
-          <div className="max-w-2xl">
-            <p className="font-mono text-[10px] sm:text-[11px] uppercase tracking-[0.24em] text-copper-light">02 — Смета</p>
-            <h2 className="mt-3 font-display font-extrabold tracking-[-0.02em] text-4xl sm:text-5xl leading-[1.05]">
-              Честная цена{" "}
-              <em className="font-serif italic font-medium text-copper-light">за 30 секунд</em>
-            </h2>
-          </div>
-          <p className="max-w-xs text-sm text-paper/60 leading-relaxed">
-            Двигайте ползунок — итог считается мгновенно. Точную цифру фиксируем в договоре после бесплатного замера.
-          </p>
-        </div>
-
-        <div className="mt-10 sm:mt-14 grid lg:grid-cols-12 gap-6 lg:gap-10">
+        <div className="mt-10 grid gap-6 lg:mt-14 lg:grid-cols-12 lg:gap-8">
           {/* controls */}
-          <div className="lg:col-span-7 rounded-3xl border border-paper/10 bg-ink-2/60 p-6 sm:p-8 backdrop-blur">
-            {/* type segmented control */}
-            <p className="font-mono text-[10px] uppercase tracking-[0.2em] text-paper/50">Тип ремонта</p>
-            <div className="mt-3 grid gap-2 rounded-2xl border border-paper/10 bg-ink p-2 sm:grid-cols-3" role="tablist" aria-label="Тип ремонта">
+          <div className="rounded-2xl border border-line bg-surface p-6 sm:p-8 lg:col-span-7">
+            <p className="text-[13px] text-secondary" id="calc-type-label">
+              Тип ремонта
+            </p>
+            <div
+              className="mt-2.5 grid gap-1 rounded-lg border border-line bg-paper p-1 sm:grid-cols-3"
+              role="tablist"
+              aria-labelledby="calc-type-label"
+            >
               {(Object.keys(RATES) as ServiceId[]).map((id) => {
                 const selected = id === type;
                 return (
@@ -110,27 +116,25 @@ export default function Calculator({ type, onTypeChange, onSubmit }: Props) {
                     role="tab"
                     aria-selected={selected}
                     onClick={() => onTypeChange(id)}
-                    className={`flex items-center justify-between gap-2 rounded-xl px-3 py-3 text-left transition-all duration-300 sm:block sm:px-4 sm:text-center ${
-                      selected ? "bg-copper text-ink shadow-[0_10px_30px_-10px_rgba(194,109,61,0.7)]" : "text-paper/75 hover:text-paper"
+                    className={`flex items-center justify-between gap-2 rounded-md px-3 py-2 text-left transition-colors duration-150 sm:block sm:text-center ${
+                      selected ? "bg-surface text-ink shadow-[0_1px_2px_rgba(31,27,22,0.05)]" : "text-secondary hover:text-ink"
                     }`}
                   >
-                    <span className="block font-display text-[12px] sm:text-sm font-extrabold leading-tight">{LABELS[id]}</span>
-                    <span className={`block font-mono text-[9px] sm:mt-1 sm:text-[10px] ${selected ? "text-ink/80" : "text-paper/45"}`}>
-                      от {fmt(RATES[id])}/м²
-                    </span>
+                    <span className="block text-[14px] font-medium leading-tight">{LABELS[id]}</span>
+                    <span className="block text-[12px] tabular-nums text-muted sm:mt-0.5">от {fmt(RATES[id])}/м²</span>
                   </button>
                 );
               })}
             </div>
 
             {/* area slider */}
-            <div className="mt-7">
+            <div className="mt-8">
               <div className="flex items-baseline justify-between gap-4">
-                <label htmlFor="area" className="font-mono text-[10px] uppercase tracking-[0.2em] text-paper/50">
+                <label htmlFor="area" className="text-[13px] text-secondary">
                   Площадь квартиры
                 </label>
-                <p className="font-display font-extrabold text-2xl sm:text-3xl text-paper">
-                  {area} <span className="text-copper-light text-lg align-top">м²</span>
+                <p className="text-[26px] font-medium tabular-nums leading-none text-ink">
+                  {area} <span className="text-[15px] text-muted">м²</span>
                 </p>
               </div>
               <input
@@ -142,13 +146,15 @@ export default function Calculator({ type, onTypeChange, onSubmit }: Props) {
                 value={area}
                 onChange={(e) => setArea(Number(e.target.value))}
                 className="area-range mt-4 w-full"
-                style={{ background: `linear-gradient(to right, #C26D3D 0%, #C26D3D ${pct}%, rgba(249,248,246,0.14) ${pct}%, rgba(249,248,246,0.14) 100%)` }}
+                style={{
+                  background: `linear-gradient(to right, #B0592A 0%, #B0592A ${pct}%, #E3DDD2 ${pct}%, #E3DDD2 100%)`,
+                }}
                 aria-valuetext={`${area} квадратных метров`}
               />
-              <div className="mt-2 flex justify-between font-mono text-[9px] text-paper/35">
-                <span>{MIN_AREA} м² · студия</span>
+              <div className="mt-2 flex justify-between text-[12px] tabular-nums text-muted">
+                <span>18 м²</span>
                 <span>100 м²</span>
-                <span>{MAX_AREA} м² · пентхаус</span>
+                <span>200 м²</span>
               </div>
             </div>
 
@@ -158,24 +164,28 @@ export default function Calculator({ type, onTypeChange, onSubmit }: Props) {
               role="switch"
               aria-checked={withMaterials}
               onClick={() => setWithMaterials((v) => !v)}
-              className="mt-6 flex w-full items-center justify-between gap-4 rounded-2xl border border-paper/10 bg-ink p-4 text-left transition hover:border-copper/40"
+              className="mt-8 flex w-full items-center justify-between gap-4 rounded-lg border border-line px-4 py-3.5 text-left transition-colors duration-150 hover:border-ink/25"
             >
               <span>
-                <span className="block font-display text-sm sm:text-[15px] font-bold text-paper">С материалами — по оптовым ценам</span>
-                <span className="mt-0.5 block text-[11px] sm:text-xs text-paper/50">закупаем у 40+ поставщиков, без нашей наценки</span>
+                <span className="block text-[15px] font-medium text-ink">С материалами по оптовым ценам</span>
+                <span className="mt-0.5 block text-[13px] text-muted">Закупка у 40 поставщиков, без нашей наценки</span>
               </span>
               <span
                 aria-hidden="true"
-                className={`relative h-7 w-12 shrink-0 rounded-full transition-colors duration-300 ${withMaterials ? "bg-copper" : "bg-paper/15"}`}
+                className={`relative h-6 w-10 shrink-0 rounded-full transition-colors duration-150 ${
+                  withMaterials ? "bg-copper" : "bg-line"
+                }`}
               >
                 <span
-                  className={`absolute top-1 h-5 w-5 rounded-full bg-paper shadow transition-all duration-300 ${withMaterials ? "left-6" : "left-1"}`}
+                  className={`absolute top-1 h-4 w-4 rounded-full bg-surface transition-[transform] duration-150 ${
+                    withMaterials ? "translate-x-5" : "translate-x-1"
+                  }`}
                 />
               </span>
             </button>
 
             {/* option toggles */}
-            <div className="mt-4 grid sm:grid-cols-2 gap-2">
+            <div className="mt-3 grid gap-2 sm:grid-cols-2">
               {toggles.map((t) => (
                 <button
                   key={t.key}
@@ -183,27 +193,25 @@ export default function Calculator({ type, onTypeChange, onSubmit }: Props) {
                   aria-pressed={t.checked}
                   disabled={t.disabled}
                   onClick={() => t.set(!t.checked)}
-                  className={`flex items-start gap-3 rounded-2xl border p-4 text-left transition-all duration-200 ${
+                  className={`flex items-start gap-3 rounded-lg border px-4 py-3.5 text-left transition-colors duration-150 ${
                     t.disabled
-                      ? "border-copper/30 bg-copper/10 opacity-90 cursor-default"
+                      ? "cursor-default border-line bg-paper"
                       : t.checked
-                        ? "border-copper/60 bg-copper/10"
-                        : "border-paper/10 bg-ink hover:border-paper/25"
+                        ? "border-copper/45 bg-surface"
+                        : "border-line bg-transparent hover:border-ink/25"
                   }`}
                 >
                   <span
                     aria-hidden="true"
-                    className={`mt-0.5 flex h-5 w-5 shrink-0 items-center justify-center rounded-md border transition ${
-                      t.checked ? "border-copper bg-copper text-ink" : "border-paper/30 text-transparent"
+                    className={`mt-0.5 flex h-4 w-4 shrink-0 items-center justify-center rounded-[4px] border ${
+                      t.checked ? "border-copper bg-copper text-paper" : "border-line"
                     }`}
                   >
-                    <svg viewBox="0 0 12 10" className="h-3 w-3 fill-none stroke-current" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                      <path d="M1 5.5 4.5 9 11 1" />
-                    </svg>
+                    {t.checked && <Check size={12} strokeWidth={2} />}
                   </span>
                   <span>
-                    <span className="block text-[12px] sm:text-[13px] font-semibold leading-snug text-paper">{t.label}</span>
-                    <span className="mt-1 block font-mono text-[9.5px] text-paper/45">{t.hint}</span>
+                    <span className="block text-[14px] leading-[20px] text-ink">{t.label}</span>
+                    <span className="mt-0.5 block text-[12px] tabular-nums text-muted">{t.hint}</span>
                   </span>
                 </button>
               ))}
@@ -212,79 +220,41 @@ export default function Calculator({ type, onTypeChange, onSubmit }: Props) {
 
           {/* estimate panel */}
           <Reveal className="lg:col-span-5">
-            <div className="h-full rounded-3xl border border-copper/25 bg-gradient-to-b from-copper/10 to-transparent p-6 sm:p-8 flex flex-col">
-              <div className="flex items-center justify-between gap-3">
-                <p className="inline-flex items-center gap-2 font-mono text-[10px] uppercase tracking-[0.22em] text-copper-light">
-                  <CalculatorIcon size={13} /> Предварительная оценка
-                </p>
-                <span className="inline-flex items-center gap-1.5 rounded-full bg-copper/20 px-2.5 py-1 font-mono text-[9px] font-semibold uppercase tracking-[0.14em] text-copper-light">
-                  <BadgePercent size={11} /> −3% по заявке
-                </span>
+            <div className="flex h-full flex-col rounded-2xl bg-ink p-6 text-paper sm:p-8">
+              <div className="flex items-baseline justify-between gap-3">
+                <p className="text-[13px] text-paper/70">Предварительная оценка</p>
+                <p className="text-[13px] tabular-nums text-copper-light">−3% по заявке</p>
               </div>
 
-              <dl className="mt-6 space-y-2.5 text-[13px] sm:text-sm">
-                <div className="flex items-baseline justify-between gap-4 border-b border-paper/8 pb-2.5">
-                  <dt className="text-paper/60">Работы · {area} м²</dt>
-                  <dd className="font-mono text-paper/90">{fmt(calc.works)}</dd>
-                </div>
-                {calc.materials > 0 && (
-                  <div className="flex items-baseline justify-between gap-4 border-b border-paper/8 pb-2.5">
-                    <dt className="text-paper/60">Материалы по опт. ценам</dt>
-                    <dd className="font-mono text-paper/90">{fmt(calc.materials)}</dd>
+              <dl className="mt-5 space-y-2.5 text-[14px]">
+                {rows.map((row) => (
+                  <div key={row.label} className="flex items-baseline justify-between gap-4 border-b border-paper/10 pb-2.5">
+                    <dt className="text-paper/65">{row.label}</dt>
+                    <dd className="tabular-nums text-paper">{row.value}</dd>
                   </div>
-                )}
-                {calc.design > 0 && (
-                  <div className="flex items-baseline justify-between gap-4 border-b border-paper/8 pb-2.5">
-                    <dt className="text-paper/60">Дизайн-проект</dt>
-                    <dd className="font-mono text-paper/90">{fmt(calc.design)}</dd>
-                  </div>
-                )}
-                {calc.demo > 0 && (
-                  <div className="flex items-baseline justify-between gap-4 border-b border-paper/8 pb-2.5">
-                    <dt className="text-paper/60">Демонтаж и вывоз</dt>
-                    <dd className="font-mono text-paper/90">{fmt(calc.demo)}</dd>
-                  </div>
-                )}
-                {calc.furn > 0 && (
-                  <div className="flex items-baseline justify-between gap-4 border-b border-paper/8 pb-2.5">
-                    <dt className="text-paper/60">Мебель на заказ</dt>
-                    <dd className="font-mono text-paper/90">{fmt(calc.furn)}</dd>
-                  </div>
-                )}
-                {calc.smart > 0 && (
-                  <div className="flex items-baseline justify-between gap-4 border-b border-paper/8 pb-2.5">
-                    <dt className="text-paper/60">Умный дом</dt>
-                    <dd className="font-mono text-paper/90">{fmt(calc.smart)}</dd>
-                  </div>
-                )}
-                <div className="flex items-baseline justify-between gap-4 border-b border-paper/8 pb-2.5">
-                  <dt className="text-paper/60">Скидка по заявке с сайта</dt>
-                  <dd className="font-mono text-copper-light">−{fmt(calc.discount)}</dd>
-                </div>
+                ))}
               </dl>
 
               <div className="mt-5">
-                <p className="font-mono text-[10px] uppercase tracking-[0.2em] text-paper/50">Итого «под ключ»</p>
-                <p className="mt-1 font-display font-extrabold tracking-tight text-4xl sm:text-5xl text-paper">
+                <p className="text-[13px] text-paper/70">Итого под ключ</p>
+                <p className="mt-1 text-[36px] font-medium tabular-nums leading-none tracking-[-0.02em] text-paper sm:text-[40px]">
                   {fmt(calc.total)}
                 </p>
-                <p className="mt-2 inline-flex items-center gap-2 text-[11px] sm:text-xs text-paper/55">
-                  <Info size={12} className="text-copper-light" />
-                  Срок: ~{calc.weeks} {calc.weeks < 5 ? "недели" : "недель"} · замер бесплатно · цена в договоре не меняется
+                <p className="mt-3 text-[13px] leading-[18px] text-paper/65">
+                  Срок около {calc.weeks} недель, замер бесплатный, цена в договоре не
+                  меняется
                 </p>
               </div>
 
               <button
                 type="button"
                 onClick={() => onSubmit(summary)}
-                className="group mt-6 inline-flex w-full items-center justify-center gap-2 rounded-2xl bg-copper px-6 py-4 sm:py-5 font-display text-base font-extrabold text-ink transition hover:bg-copper-light"
+                className="mt-6 inline-flex h-12 w-full items-center justify-center gap-2 rounded-lg bg-paper px-5 text-[15px] font-medium text-ink transition-colors duration-150 hover:bg-sunk"
               >
-                Получить точную смету в договоре
-                <ArrowRight size={19} className="transition-transform duration-300 group-hover:translate-x-1.5" />
+                Получить точную смету
+                <ArrowRight size={17} strokeWidth={1.5} aria-hidden="true" />
               </button>
-              <p className="mt-3 text-center font-mono text-[9px] uppercase tracking-[0.2em] text-paper/40">
-                Выезд инженера и замер — 0 ₽ · без предоплаты
-              </p>
+              <p className="mt-3 text-center text-[12px] text-paper/55">Выезд инженера и замер 0 ₽, без предоплаты</p>
             </div>
           </Reveal>
         </div>
