@@ -38,6 +38,13 @@
   <a href="docs/screenshots/mobile-full.webp">📱 Мобильная версия целиком</a>
 </p>
 
+Снимки пересобираются одной командой, пока запущен dev-сервер:
+
+```bash
+npm i -D playwright && npx playwright install chromium   # один раз
+npm run shots                                            # или: npm run shots -- http://localhost:4173/
+```
+
 ## ✨ Возможности
 
 | Блок | Что умеет |
@@ -82,6 +89,7 @@ npm run dev
 | `npm run dev` | Dev-сервер на `0.0.0.0:5173` |
 | `npm run build` | Продакшн-сборка в `dist/index.html` (всё инлайнено в один файл) |
 | `npm run preview` | Предпросмотр сборки на `0.0.0.0:4173` |
+| `npm run shots` | Снимки для README в `docs/screenshots` (нужен Playwright) |
 
 ## 🗂️ Структура проекта
 
